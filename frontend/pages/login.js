@@ -1,4 +1,4 @@
-import {Button, Form, Input, Space} from 'antd';
+import {Button, Form, Input, message, Space} from 'antd';
 import React, {useState} from "react";
 import {useRouter} from "next/router";
 import {LockOutlined, UserOutlined} from "@ant-design/icons";
@@ -20,15 +20,37 @@ const validateMessages = {
 export default function Login() {
     const router = useRouter()
     const [form] = Form.useForm();
+    const [logging, setLogging] = useState(false);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const url = '/login/validate'
 
-    const onFinish = (values) => {
-        console.log('Success:', values);
+    const onLogIn = () => {
+        setLogging(true)
+        fetch(url,{
+            method: 'POST',
+            headers: {'Content-Type':'multipart/form-data'},
+            body: form,
+        }).then(response => response.json())
+            .then(json => {
+                router.push('/')
+            })
+            .catch(() => {
+                message.error({
+                        content: 'Username or password wrong! Contact the administrator please!',
+                        style: {
+                            marginTop: '2vh',
+                        },
+                        duration: 3,
+                    }
+                );
+                setLogging(false);
+            })
+            .finally(() => {
+                setLogging(false);
+            });
     };
-    const onFinishFailed = (errorInfo) => {
-        console.log('Failed:', errorInfo);
-    };
+
     const onHandleBackHome = () => {
         //nextjs路由跳转到结果页面
         router.push('/')
@@ -60,7 +82,6 @@ export default function Login() {
                 </div>
                 <Form
                     {...layout}
-                    name="basic"
                     style={{
                         maxWidth: 400,
                         margin:"auto"
@@ -69,8 +90,8 @@ export default function Login() {
                         remember: true,
                     }}
                     form={form}
-                    onFinish={onFinish}
-                    onFinishFailed={onFinishFailed}
+                    name="control-hooks"
+                    onFinish={onLogIn}
                     validateMessages={validateMessages}
                     autoComplete="off"
                 ><br/>
@@ -80,7 +101,7 @@ export default function Login() {
                         rules={[
                             {
                                 required: true,
-                                message: 'Please input your username!',
+                                max: 20,
                             },
                         ]}
                     >
@@ -93,7 +114,7 @@ export default function Login() {
                         rules={[
                             {
                                 required: true,
-                                message: 'Please input your password!',
+                                max: 50,
                             },
                         ]}
                     >
@@ -106,6 +127,8 @@ export default function Login() {
                         <Space>
                             <Button type="primary" htmlType="submit"
                                     className="login-form-button"
+                                    loading={logging}
+
                             >
                                 Log in
                             </Button>

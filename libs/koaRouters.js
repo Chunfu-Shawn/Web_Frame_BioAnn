@@ -9,6 +9,7 @@ import {setJobMappingInfo} from "./record/setJobMappingInfo.js";
 import copyExampleFiles from "./copyExampleFiles.js";
 import {setJobStatus} from "./record/setJobStatus.js";
 import {setJobParams} from "./record/setJobParams.js";
+import {getMouseMap} from "./api/getMouseMap.js";
 
 
 export const Router = router()
@@ -31,20 +32,9 @@ const SectionBlast = async (ctx) => uploadRecord(ctx).then(
 })
 
 // scRNA-seq上传文件的路由
-Router.post('/mapping/scRNA-seq',
-    uploadFile().fields([
-        {name: 'matrixFile', maxCount: 1},
-        {name: 'labelsFile', maxCount: 1},
-    ]), SectionBlast )
-
-// multi-omics上传文件的路由 含有peak文件
-Router.post('/mapping/multiomics',
-    uploadFile().fields([
-        {name: 'matrixFile', maxCount: 1},
-        {name: 'labelsFile', maxCount: 1},
-        {name: 'fragmentsFile', maxCount: 1},
-        {name: 'peakFile', maxCount: 1},
-    ]), SectionBlast )
+Router.post('/login/validate', (ctx) => {
+    ctx.body = {signal: "received"}
+})
 
 // run audition 的路由
 Router.post('/mapping/demo', async (ctx) => uploadRecord(ctx).then(
