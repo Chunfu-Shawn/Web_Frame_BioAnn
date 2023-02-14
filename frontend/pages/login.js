@@ -68,6 +68,7 @@ export default function Login() {
                     initialValues={{
                         remember: true,
                     }}
+                    form={form}
                     onFinish={onFinish}
                     onFinishFailed={onFinishFailed}
                     validateMessages={validateMessages}
