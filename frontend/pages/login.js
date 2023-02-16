@@ -2,6 +2,7 @@ import {Button, Form, Input, message, Space} from 'antd';
 import React, {useState} from "react";
 import {useRouter} from "next/router";
 import {LockOutlined, UserOutlined} from "@ant-design/icons";
+import createHash from 'create-hash'
 
 export const validateMessages = {
     required: '${label} is required!',
@@ -21,16 +22,22 @@ export default function Login() {
     const router = useRouter()
     const [form] = Form.useForm();
     const [logging, setLogging] = useState(false);
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
     const url = '/login/validate'
 
     const onLogIn = (formValues) => {
         setLogging(true)
+        let formJSON = JSON.parse(JSON.stringify(formValues))
+        // hash 加密密码
+        let hashPassword = createHash('sha224',) // 定义加密方法和密钥
+            .update(formJSON.password) // 要编码的数据
+            .digest('hex') // 定义编码类型，synchronously get result with optional encoding paramete
         fetch(url,{
             method: 'POST',
             headers: {'Content-Type':'application/json'},
-            body: JSON.stringify(formValues),
+            body: JSON.stringify({
+                username: formJSON.username,
+                password: hashPassword
+            }),
         }).then(response => response.json())
             .then(json => {
                 message.info({
@@ -66,8 +73,6 @@ export default function Login() {
     }
     const onReset = () => {
         form.resetFields();
-        setUsername('');
-        setPassword('');
     };
     const layout = {
         labelAlign: "left",

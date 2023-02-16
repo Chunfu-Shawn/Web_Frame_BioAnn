@@ -5,7 +5,6 @@ const { confirm } = Modal;
 import {useRouter} from "next/router";
 import {useEffect, useState} from "react";
 import ChangePasswordModal from "../components/manage/ChangePasswordModal";
-import DeleteUserModal from "../components/manage/DeleteUserModal";
 import {ExclamationCircleFilled} from "@ant-design/icons";
 
 export default function ManagePage() {

@@ -6,6 +6,7 @@ import {handler} from "../server.js";
 import {addAnUser} from "./usersAdminister/addAnUser.js";
 import {changePassword} from "./usersAdminister/changePassword.js";
 import {deleteAnUser} from "./usersAdminister/deleteAnUser.js";
+import bcrypt from 'bcryptjs'
 
 
 export const Router = router()
@@ -13,13 +14,15 @@ export const Router = router()
 
 // 账号登入的验证
 Router.post('/login/validate', async (ctx) => {
-    const user = await getPassword(ctx.request.body.username)
-    if(user.password === ctx.request.body.password){
+    const {username, password} = ctx.request.body
+    const user = await getPassword(username)
+    // 比较传过来的hash加密的密码和数据库中盐加密的密码
+    if(bcrypt.compareSync(password, user.password)){
         ctx.session.user = user.username
         console.log("Log in " + ctx.session.user)
-        ctx.session.isLogin = true
-        // 服务端在保存session信息（包括user）
-        await ctx.session.save();
+        //ctx.session.isLogin = true
+        // 服务端在内存中保存session信息（包括user）
+        //await ctx.session.save();
         ctx.response.status = 200;
         ctx.response.body = {signal: 'Log in successful!', user: user.username};
     }else {
@@ -48,19 +51,23 @@ Router.get('/register', async (ctx) => {
 
 // 账号注册的验证
 Router.post('/register/validate', async (ctx) => {
+    const {username, password} = ctx.request.body
     const users =  await getUsers()
     let userExists = false
     users.forEach( item => {
-        if(item.username === ctx.request.body.username)
+        if(item.username === username)
             userExists = true
     })
     if(ctx.session.user === "admin" && userExists){
         ctx.response.status = 401
         ctx.response.body = null
     }else {
-        await addAnUser(ctx.request.body.username, ctx.request.body.password)
+        // 盐加密
+        const salt = bcrypt.genSaltSync(10);
+        const bcryptPassword = bcrypt.hashSync(password, salt);
+        await addAnUser(username, bcryptPassword)
         ctx.response.status = 200
-        ctx.response.body = { signal: 'Register successfully', user: ctx.request.body.username }
+        ctx.response.body = { signal: 'Register successfully', user: username }
     }
 })
 
@@ -76,10 +83,14 @@ Router.get('/manage', async (ctx) => {
 
 // 更改账号密码
 Router.post('/change_password', async (ctx) => {
+    const {username, password} = ctx.request.body
     if(ctx.session.user === "admin"){
-        await changePassword(ctx.request.body.username, ctx.request.body.password)
+        // 盐加密
+        const salt = bcrypt.genSaltSync(10);
+        const bcryptPassword = bcrypt.hashSync(password, salt);
+        await changePassword(username, bcryptPassword)
         ctx.response.status = 200
-        ctx.response.body = { signal: 'Change password successfully', user: ctx.request.body.username }
+        ctx.response.body = { signal: 'Change password successfully', user: username }
     }else {
         ctx.response.status = 401
         ctx.response.body = null

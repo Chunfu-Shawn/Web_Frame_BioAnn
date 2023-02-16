@@ -3,6 +3,7 @@ import {validateMessages} from "../../pages/login";
 import {LockOutlined} from "@ant-design/icons";
 import {useState} from "react";
 import {useRouter} from "next/router";
+import createHash from "create-hash";
 
 export default function ChangePasswordModal(props){
     const router = useRouter()
@@ -39,10 +40,18 @@ export default function ChangePasswordModal(props){
 
     const handleChangePassword = (formValues) => {
         setChanging(true)
+        let formJSON = JSON.parse(JSON.stringify(formValues))
+        // hash 加密密码
+        let hashPassword = createHash('sha224',) // 定义加密方法和密钥
+            .update(formJSON.password) // 要编码的数据
+            .digest('hex') // 定义编码类型，synchronously get result with optional encoding paramete
         fetch(url,{
             method: 'POST',
             headers: {'Content-Type':'application/json'},
-            body: JSON.stringify(formValues),
+            body: JSON.stringify({
+                username: formJSON.username,
+                password: hashPassword
+            }),
         }).then(response => response.json())
             .then(json => {
                 message.info({
