@@ -28,6 +28,14 @@ html body .mainbody{
   background-color: #252525;
 }
 
+body a{
+  color: #1a57b4;
+}
+body a:hover{
+  color: #5a9aee;
+  text-decoration: none;
+}
+
 .modal-body-stw {
   /*
   to make footer bottom

@@ -2,30 +2,16 @@ import {Button, Form, Input, message, Space} from 'antd';
 import React, {useState} from "react";
 import {useRouter} from "next/router";
 import {LockOutlined, UserOutlined} from "@ant-design/icons";
+import {validateMessages} from "./login";
 
-export const validateMessages = {
-    required: '${label} is required!',
-    types: {
-        email: '${label} is not a valid email!',
-        number: '${label} is not a valid number!',
-    },
-    number: {
-        range: '${label} must be between ${min} and ${max}!',
-    },
-    string: {
-        max: "'${name}' cannot be longer than ${max} characters!",
-    }
-};
 
-export default function Login() {
+export default function Register() {
     const router = useRouter()
     const [form] = Form.useForm();
     const [logging, setLogging] = useState(false);
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const url = '/login/validate'
+    const url = '/register/validate'
 
-    const onLogIn = (formValues) => {
+    const handleRegister = (formValues) => {
         setLogging(true)
         fetch(url,{
             method: 'POST',
@@ -34,7 +20,7 @@ export default function Login() {
         }).then(response => response.json())
             .then(json => {
                 message.info({
-                        content: json.user+", welcome back!",
+                        content: json.signal + " for " + json.user,
                         style: {
                             marginTop: '10vh',
                         },
@@ -42,11 +28,11 @@ export default function Login() {
                     }
                 );
                 setLogging(false);
-                router.push('/')
+                router.push('/manage')
             })
             .catch(() => {
                 message.error({
-                        content: 'Username or password wrong! Contact the administrator please!',
+                        content: 'Username already exists! Enter again!',
                         style: {
                             marginTop: '2vh',
                         },
@@ -62,20 +48,18 @@ export default function Login() {
 
     const onHandleBackHome = () => {
         //nextjs路由跳转到结果页面
-        router.push('/')
+        router.push('/manage')
     }
     const onReset = () => {
         form.resetFields();
-        setUsername('');
-        setPassword('');
     };
     const layout = {
         labelAlign: "left",
         labelCol: {
-            span: 6,
+            span: 8,
         },
         wrapperCol: {
-            span: 18,
+            span: 16,
         },
     };
     const tailLayout = {
@@ -87,12 +71,12 @@ export default function Login() {
     return (
             <div className="modal-body-stw">
                 <div className="inner cover" style={{width:1000}}>
-                    <h1> Log in for services</h1>
+                    <h1>Register a new user</h1>
                 </div>
                 <Form
                     {...layout}
                     style={{
-                        maxWidth: 400,
+                        maxWidth: 600,
                         margin:"auto"
                     }}
                     initialValues={{
@@ -100,7 +84,7 @@ export default function Login() {
                     }}
                     form={form}
                     name="control-hooks"
-                    onFinish={onLogIn}
+                    onFinish={handleRegister}
                     validateMessages={validateMessages}
                     autoComplete="off"
                 ><br/>
@@ -120,12 +104,36 @@ export default function Login() {
                     <Form.Item
                         label="Password"
                         name="password"
+                        hasFeedback
                         rules={[
                             {
                                 required: true,
                                 min: 6,
                                 max: 30,
                             },
+                        ]}
+                    >
+                        <Input.Password prefix={<LockOutlined className="site-form-item-icon" />} placeholder="Password"/>
+                    </Form.Item>
+
+                    <Form.Item
+                        label="Confirm Password"
+                        name="confirmPassword"
+                        hasFeedback
+                        rules={[
+                            {
+                                required: true,
+                                min: 6,
+                                max: 30,
+                            },
+                            ({ getFieldValue }) => ({
+                                validator(_, value) {
+                                    if (!value || getFieldValue('password') === value) {
+                                        return Promise.resolve();
+                                    }
+                                    return Promise.reject(new Error('The two passwords that you entered do not match!'));
+                                },
+                            }),
                         ]}
                     >
                         <Input.Password prefix={<LockOutlined className="site-form-item-icon" />} placeholder="Password"/>
@@ -139,13 +147,13 @@ export default function Login() {
                                     className="login-form-button"
                                     loading={logging}
                             >
-                                Log in
+                                Register
                             </Button>
                             <Button onClick={onReset}>
                                 Reset
                             </Button>
                             <Button onClick={onHandleBackHome} type={"link"}>
-                                Back home
+                                Back
                             </Button>
                         </Space>
                     </Form.Item>

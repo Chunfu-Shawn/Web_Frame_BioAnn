@@ -1,6 +1,6 @@
 {
   "verbose": true,
-  "ignore": ["node_modules", ".next", "static"],
+  "ignore": ["node_modules", "frontend", "static"],
   "watch": [
     "libs/*",
     "libs/**/*",

@@ -4718,7 +4718,7 @@ fieldset[disabled] .navbar-default .btn-link:focus {
   -ms-transition: color ease .5s, background-color ease 1s, border-bottom-color ease 1s;
   border-bottom-style: solid;
   border-bottom-width: medium;
-  border-bottom-color: #4c17ea;
+  border-bottom-color: #1753ea;
 }
 .navbar-inverse .navbar-nav > .active > a,
 .navbar-inverse .navbar-nav > .active > a:hover,
@@ -4728,7 +4728,7 @@ fieldset[disabled] .navbar-default .btn-link:focus {
   background-color: #111111;
   border-bottom-style: solid;
   border-bottom-width: medium;
-  border-bottom-color: #4c17ea;
+  border-bottom-color: #1753ea;
 }
 .navbar-inverse .navbar-nav > .disabled > a,
 .navbar-inverse .navbar-nav > .disabled > a:hover,
