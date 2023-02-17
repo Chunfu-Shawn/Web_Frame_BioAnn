@@ -2,9 +2,7 @@ import Head from 'next/head'
 import Navigator from "./navigator.js";
 import FooterCustom from "./footer.js";
 import {FloatButton} from "antd";
-import NavigatorWithLogin from "./navigatorWithLogin";
 import React, {useEffect, useState} from "react";
-// eslint-disable-next-line @next/next/no-document-import-in-page
 
 export const siteTitle = "WEB FRAME"
 export const Context = React.createContext({});

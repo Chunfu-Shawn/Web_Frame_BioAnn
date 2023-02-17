@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import LayoutCustom, { siteTitle } from '../components/LayoutCustom.js'
-import {Button, message, Modal, Space, Table} from 'antd';
+import {Button, message, Modal, Space, Table, Tag} from 'antd';
 const { confirm } = Modal;
 import {useRouter} from "next/router";
 import {useEffect, useState} from "react";
@@ -101,6 +101,13 @@ export default function ManagePage() {
             sortOrder: sortedInfo.columnKey === 'username' ? sortedInfo.order : null,
         },
         {
+            title: 'Identity',
+            dataIndex: 'identity',
+            key: 'identity',
+            render: (_,record) => record.username==="admin"?<Tag color="gold">Administrator</Tag>
+                :<Tag color="blue">User</Tag>,
+        },
+        {
             title: 'Action',
             key: 'action',
             width: "40%",
@@ -135,24 +142,26 @@ export default function ManagePage() {
             <Head>
                 <title>{siteTitle+"| Gene Search"}</title>
             </Head>
-            <div className="modal-body-stw" style={{height:"90vh"}}>
-                <div className="inner cover" style={{width:1000}}>
+            <div className="modal-body-stw">
+                <div style={{textAlign:"left",margin:"0 140px"}}>
                     <h1> Manage accounts</h1>
+                    <ChangePasswordModal
+                        username={username}
+                        isModalOpen={isModalOpen}
+                        setIsModalOpen={setIsModalOpen}
+                        handleCancel={handleCancel}
+                    />
+                    <div className={"border-card-wrapper"} style={{width:850}}>
+                        <Space align="center" style={{marginBottom:10,width:300}}>
+                            <Button onClick={onAddUser}>Add an user</Button>
+                        </Space>
+                        <Table style={{width:800,margin:"auto"}}
+                               columns={columns}
+                               dataSource={users}
+                               size="small"
+                               onChange={handleChange}/>
+                    </div>
                 </div>
-                <ChangePasswordModal
-                    username={username}
-                    isModalOpen={isModalOpen}
-                    setIsModalOpen={setIsModalOpen}
-                    handleCancel={handleCancel}
-                />
-                <Space align="center" style={{height:60,float:"right",width:300}}>
-                    <Button onClick={onAddUser}>Add an user</Button>
-                </Space>
-                <Table style={{width:800,margin:"auto"}}
-                       columns={columns}
-                       dataSource={users}
-                       size="small"
-                       onChange={handleChange}/>
             </div>
         </LayoutCustom>
     )

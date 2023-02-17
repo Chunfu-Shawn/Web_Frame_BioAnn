@@ -73,12 +73,12 @@ export default function Navigator(){
 
 
     return(
-        <nav id="topheader" className="navbar-inverse navbar-fixed-top">
+        <nav id="topheader" className="navbar-default navbar-fixed-top">
             <div className="container">
                 <div>
                     <Link href="/">
                         <a className="navbar-brand" >
-                            <h4>WEB FRAME</h4>
+                            WEB FRAME
                         </a>
                     </Link>
                 </div>
@@ -87,16 +87,17 @@ export default function Navigator(){
                         <>
                             <li id="osha" className="nav-item"><Link href="/osha"><a className="nav-link">OSHA</a></Link></li>
                             <li id="sisco" className="nav-item"><Link href="/sisco"><a className="nav-link">SISCO</a></Link></li>
-                            <li id="search" className="nav-item"><Link href="/search"><a className="nav-link" >Search</a></Link></li>
+                            <li id="otos" className="nav-item"><Link href="/otos"><a className="nav-link">OTOS</a></Link></li>
+                            <li id="milos" className="nav-item"><Link href="/milos"><a className="nav-link">MILOS</a></Link></li>
+                            <li id="sider" className="nav-item"><Link href="/sider"><a className="nav-link">SIDER</a></Link></li>
                         </>
                         :
                         <></>
                     }
                     <li id="help" className="nav-item"><Link href="/help/manual/mapping"><a className="nav-link" >Help</a></Link></li>
-                    <li id="about" className="nav-item"><Link href="/about"><a className="nav-link" >About</a></Link></li>
                     <li id="contact" className="nav-item"><Link href="/contact"><a className="nav-link" >Contact</a></Link></li>
                 </ul>
-                <div style={{float:"right",padding: '25px 15px'}}>
+                <div style={{float:"right",padding: '12px'}}>
                     {context.username ?
                         <Dropdown menu={{items}}>
                             <Button>

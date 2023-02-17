@@ -1,11 +1,10 @@
 import React from "react";
 import { Carousel } from 'antd';
 const contentStyle = {
-    height: '800px',
-    color: '#fff',
-    lineHeight: '800px',
+    padding: '400px 400px',
+    color: '#000000',
+    fontSize: 35,
     textAlign: 'center',
-    background: '#364d79',
     marginBlockStart: 0,
 };
 
@@ -14,16 +13,16 @@ export default function MainPage() {
         <>
             <Carousel autoplay effect="fade">
                 <div>
-                    <h3 style={contentStyle}>1</h3>
+                    <h3 style={contentStyle}>Software platform for siRNA</h3>
                 </div>
                 <div>
-                    <h3 style={contentStyle}>2</h3>
+                    <h3 style={contentStyle}>Software platform for siRNA</h3>
                 </div>
                 <div>
-                    <h3 style={contentStyle}>3</h3>
+                    <h3 style={contentStyle}>Software platform for siRNA</h3>
                 </div>
                 <div>
-                    <h3 style={contentStyle}>4</h3>
+                    <h3 style={contentStyle}>Software platform for siRNA</h3>
                 </div>
             </Carousel>
         </>

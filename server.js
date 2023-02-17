@@ -33,7 +33,7 @@ app.prepare().then(() => {
     const CONFIG = {
         key: "koa.sess",   //cookie key (default is koa.sess)
         maxAge: 24 * 60 * 60 * 1000,  // cookie的过期时间 maxAge in ms (default is 1 days)
-        overwrite: false,  //是否可以overwrite    (默认default true)
+        overwrite: true,  //是否可以overwrite    (默认default true)
         httpOnly: true, //cookie是否只有服务器端可以访问 httpOnly or not (default true)
         signed: true,   //签名默认true
         rolling: false,  //在每次请求时强行设置cookie，这将重置cookie过期时间（默认：false）

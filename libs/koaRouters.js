@@ -39,6 +39,16 @@ Router.get('/logout', (ctx, next) => {
     ctx.session = null;
 })
 
+// 账号管理的页面, 判断是否是admin
+Router.get('/manage', async (ctx) => {
+    if(ctx.session.user === "admin") {
+        ctx.response.status = 200
+        await handler(ctx.req, ctx.res)
+    }
+    else
+        ctx.response.status = 404
+})
+
 // 账号注册的页面, 判断是否是admin
 Router.get('/register', async (ctx) => {
     if(ctx.session.user === "admin") {
@@ -71,15 +81,6 @@ Router.post('/register/validate', async (ctx) => {
     }
 })
 
-// 账号注册的页面, 判断是否是admin
-Router.get('/manage', async (ctx) => {
-    if(ctx.session.user === "admin") {
-        ctx.response.status = 200
-        await handler(ctx.req, ctx.res)
-    }
-    else
-        ctx.response.status = 404
-})
 
 // 更改账号密码
 Router.post('/change_password', async (ctx) => {

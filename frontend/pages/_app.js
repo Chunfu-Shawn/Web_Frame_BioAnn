@@ -1,5 +1,4 @@
-import '../public/static/bootstrap-3.4.1-dist/css/bootstrap.css'
-import '../styles/mainpage.css'
+import '../styles/nav_footer.css'
 import '../styles/globals.css'
 import GlobalLoading from "../components/globalLoadingbar.js";
 import {useRouter} from "next/router";
