@@ -4,8 +4,6 @@ import {Button, Dropdown, message, Space} from "antd";
 import {useRouter} from "next/router";
 import {DownOutlined, UserOutlined, LogoutOutlined} from "@ant-design/icons";
 import {Context} from "./LayoutCustom";
-import osha from "../pages/osha";
-import OSHA from "../pages/osha";
 
 export default function Navigator(){
     const context = useContext(Context);
@@ -100,7 +98,7 @@ export default function Navigator(){
                 <div style={{float:"right",padding: '12px'}}>
                     {context.username ?
                         <Dropdown menu={{items}}>
-                            <Button>
+                            <Button >
                                 <Space>
                                     {context.username}
                                     <DownOutlined/>
@@ -108,7 +106,7 @@ export default function Navigator(){
                             </Button>
                         </Dropdown>
                         :
-                        <Button onClick={onHandleLogin}>
+                        <Button onClick={onHandleLogin} >
                             Login
                         </Button>
                     }
