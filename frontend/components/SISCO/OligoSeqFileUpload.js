@@ -2,10 +2,10 @@ import {Form, Button, message, Upload} from "antd";
 import {FileExcelOutlined, UploadOutlined} from "@ant-design/icons";
 import Dragger from "antd/es/upload/Dragger";
 
-export default function SiRNAFileUpload(props){
+export default function OligoSeqFileUpload(props){
 
-    const settingSiRNAFile = {
-        name: 'siRNAFile',
+    const settingOligoSeqFile = {
+        name: 'oligoSeqFile',
         required: true,
         beforeUpload: (file) => {
             let filenameArr = file.name.split('.');
@@ -48,18 +48,18 @@ export default function SiRNAFileUpload(props){
     };
 
     return(
-        <Form.Item name="siRNAFile" label="siRNA文件"
+        <Form.Item name="siRNAFile" label="Oligo seq文件"
                    rules={[
                        {
                            required: true,
                        },
                    ]}
         >
-            <Dragger {...settingSiRNAFile} maxCount={1}>
+            <Dragger {...settingOligoSeqFile} maxCount={1}>
                 <p className="ant-upload-drag-icon">
                     <FileExcelOutlined />
                 </p>
-                <p className="ant-upload-text">点击或者拖拽siRNA文件到此区域来进行上传</p>
+                <p className="ant-upload-text">点击或者拖拽Oligo序列文件到此区域来进行上传</p>
                 <small style={{color:"gray"}}> (只能 .xlsx/.csv 文件)</small>
             </Dragger>
         </Form.Item>

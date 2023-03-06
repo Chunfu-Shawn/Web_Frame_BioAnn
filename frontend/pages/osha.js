@@ -13,7 +13,7 @@ export default function OSHA() {
             </Head>
             <div className="modal-body-stw" >
                 <div style={{margin:80}}>
-                    <h2>Oligonucleotides Species Homology Analytic System (OSHA)</h2>
+                    <h2>小核酸序列物种同源性分析工具<br/>Oligonucleotides Species Homology Analytic System (OSHA)</h2>
                 </div>
                 <Card style={{padding: "20px 150px"}}>
                     <RunModule validateMessages={validateMessages}/>

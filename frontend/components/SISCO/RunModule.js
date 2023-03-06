@@ -1,5 +1,5 @@
-import {Button, Checkbox, Form, Input, message, Select, Space} from "antd";
-import SiRNAFileUpload from "./SiRNAFileUpload";
+import {Button, Checkbox, Col, Form, Input, InputNumber, message, Row, Select, Space} from "antd";
+import OligoSeqFileUpload from "./OligoSeqFileUpload";
 import RunExampleModule from "./RunExampleModule";
 import {throttle} from "../util";
 import {useState} from "react";
@@ -15,18 +15,19 @@ export default function RunModule(props) {
     } = props
     const UPLOAD_URL = `/osha/run/`
     const [siRNAFileList, setSiRNAFileList] = useState([]);
-    const [DNA2RNA, setDNA2RNA] = useState(true);
-    const [maxMismatch, setMaxMismatch] = useState('1nt');
+    const [overhang, setOverhang] = useState("SS 3'");
+    const [end, setEnd] = useState("NN");
     const [uploading, setUploading] = useState(false);
 
 
     const router = useRouter()
     const [form] = Form.useForm();
-    const onChangeDNA2RNA = (e) => {
-        setDNA2RNA(e.target.checked);
+
+    const onChangeOverhang = (value) => {
+        setOverhang(value);
     }
-    const onChangeMaxMismatch = (value) => {
-        setMaxMismatch(value);
+    const onChangeEnd = (value) => {
+        setEnd(value);
     }
 
     // 手动上传表单
@@ -118,12 +119,12 @@ export default function RunModule(props) {
               validateMessages={validateMessages}
               style={{width: 800}}>
 
-            <SiRNAFileUpload setFileList={setSiRNAFileList}
-                             fileList={siRNAFileList}
-                             uploading={uploading}
+            <OligoSeqFileUpload setFileList={setSiRNAFileList}
+                                fileList={siRNAFileList}
+                                uploading={uploading}
             />
 
-            <Form.Item name="title" label="长序列fasta序列"
+            <Form.Item name="title" label="fasta序列"
                        rules={[
                            {
                                required: true,
@@ -136,30 +137,96 @@ export default function RunModule(props) {
                               minRows: 4,
                               maxRows: 6,
                           }}
-                          placeholder="粘贴长核酸序列到此处"/>
+                          placeholder="粘贴oligo序列到此处"/>
             </Form.Item>
 
             <Form.Item label="选项" valuePropName="checked">
-                <Space size={"large"}>
-                    <Checkbox
-                        checked={DNA2RNA}
-                        onChange={onChangeDNA2RNA}
-                    >
-                        DNA -&gt; RNA
-                    </Checkbox>
-                    Max mismatch:
-                    <Select
-                        style={{
-                            width: "80px",
-                        }}
-                        value={maxMismatch}
-                        onChange={onChangeMaxMismatch}
-                    >
-                        {['1 nt','2 nt','3 nt'].map((option) => (
-                            <Option key={option}>{option}</Option>
-                        ))}
-                    </Select>
-                </Space>
+                <Row>
+                    <Space size={20}>
+                        <span>Length ( SS / AS ):</span>
+                        <Space size={10}>
+                            <InputNumber
+                                size="small"
+                                style={{
+                                    width: 40,
+                                }}
+                                controls={false}
+                                precision={0}
+                                min={1} max={22} defaultValue={19} />/
+                            <InputNumber
+                                size="small"
+                                style={{
+                                    width: 40,
+                                }}
+                                controls={false}
+                                precision={0}
+                                min={1} max={22} defaultValue={21}
+                            />
+                        </Space>
+                    </Space>
+                </Row><br/>
+                <Row style={{height:80}}>
+                    <Space size={50}>
+                        <Col>
+                            <span>Overhang: </span>
+                            <Select
+                                style={{
+                                    width: "80px",
+                                }}
+                                value={overhang}
+                                onChange={onChangeOverhang}
+                            >
+                                {["SS 3'","AS 3'","Both"].map((option) => (
+                                    <Option key={option}>{option}</Option>
+                                ))}
+                            </Select>
+                        </Col>
+                        <Col>
+                            <Row style={{height:40}}>
+                                <Space>
+                                    <span>SS 3'</span>
+                                    <InputNumber
+                                        size="small"
+                                        style={{
+                                            width: 40,
+                                        }}
+                                        controls={false}
+                                        precision={0}
+                                        min={1} max={22} defaultValue={19}
+                                    />
+                                </Space>
+                            </Row>
+                            <Row>
+                                <Space>
+                                    <span>SS 3'</span>
+                                    <InputNumber
+                                        size="small"
+                                        style={{
+                                            width: 40,
+                                        }}
+                                        controls={false}
+                                        precision={0}
+                                        min={1} max={22} defaultValue={19}
+                                    />
+                                </Space>
+                            </Row>
+                        </Col>
+                        <Col>
+                            <span>End with: </span>
+                            <Select
+                                style={{
+                                    width: "80px",
+                                }}
+                                value={end}
+                                onChange={onChangeEnd}
+                            >
+                                {["NN","UU","TT"].map((option) => (
+                                    <Option key={option}>{option}</Option>
+                                ))}
+                            </Select>
+                        </Col>
+                    </Space>
+                </Row>
             </Form.Item>
 
             <Form.Item {...tailLayout}>

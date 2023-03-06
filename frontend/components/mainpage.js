@@ -8,21 +8,20 @@ const contentStyle = {
     marginBlockStart: 0,
 };
 
+const home = <h3 style={contentStyle}>siRNA分析软件平台<br/>Analysis software platform for siRNA</h3>
+
 export default function MainPage() {
     return(
         <>
             <Carousel autoplay effect="fade">
                 <div>
-                    <h3 style={contentStyle}>Software platform for siRNA</h3>
+                    {home}
                 </div>
                 <div>
-                    <h3 style={contentStyle}>Software platform for siRNA</h3>
+                    {home}
                 </div>
                 <div>
-                    <h3 style={contentStyle}>Software platform for siRNA</h3>
-                </div>
-                <div>
-                    <h3 style={contentStyle}>Software platform for siRNA</h3>
+                    {home}
                 </div>
             </Carousel>
         </>
