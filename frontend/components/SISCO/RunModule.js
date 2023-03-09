@@ -148,8 +148,8 @@ export default function RunModule(props) {
                             <InputNumber
                                 size="small"
                                 style={{
-                                    width: 40,
-                                }}
+                                width: 40,
+                            }}
                                 controls={false}
                                 precision={0}
                                 min={1} max={22} defaultValue={19} />/

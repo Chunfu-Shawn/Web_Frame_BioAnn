@@ -2,11 +2,11 @@
 import router from 'koa-router'
 import {getPassword} from "./usersAdminister/getPassword.js";
 import {getUsers} from "./usersAdminister/getUsers.js";
-import {handler} from "../server.js";
 import {addAnUser} from "./usersAdminister/addAnUser.js";
 import {changePassword} from "./usersAdminister/changePassword.js";
 import {deleteAnUser} from "./usersAdminister/deleteAnUser.js";
 import bcrypt from 'bcryptjs'
+import authentication from "./authentication.js";
 
 
 export const Router = router()
@@ -18,8 +18,8 @@ Router.post('/login/validate', async (ctx) => {
     const user = await getPassword(username)
     // 比较传过来的hash加密的密码和数据库中盐加密的密码
     if(bcrypt.compareSync(password, user.password)){
-        ctx.session.user = user.username
-        console.log("Log in " + ctx.session.user)
+        ctx.session.username = user.username
+        console.log("Log in " + ctx.session.username)
         //ctx.session.isLogin = true
         // 服务端在内存中保存session信息（包括user）
         //await ctx.session.save();
@@ -33,31 +33,17 @@ Router.post('/login/validate', async (ctx) => {
 
 // 账号登出
 Router.get('/logout', (ctx, next) => {
-    console.log("Log out " + ctx.session.user)
+    console.log("Log out " + ctx.session.username)
     // 删除session 退出登陆
-    ctx.body = {signal: 'Log out, good bye!', user: ctx.session.user};
+    ctx.body = {signal: 'Log out, good bye!', user: ctx.session.username};
     ctx.session = null;
 })
 
 // 账号管理的页面, 判断是否是admin
-Router.get('/manage', async (ctx) => {
-    if(ctx.session.user === "admin") {
-        ctx.response.status = 200
-        await handler(ctx.req, ctx.res)
-    }
-    else
-        ctx.response.status = 404
-})
+Router.get('/manage', async (ctx) => authentication(ctx,true))
 
 // 账号注册的页面, 判断是否是admin
-Router.get('/register', async (ctx) => {
-    if(ctx.session.user === "admin") {
-        ctx.response.status = 200
-        await handler(ctx.req, ctx.res)
-    }
-    else
-        ctx.response.status = 404
-})
+Router.get('/register', async (ctx) => authentication(ctx,true))
 
 // 账号注册的验证
 Router.post('/register/validate', async (ctx) => {
@@ -68,7 +54,7 @@ Router.post('/register/validate', async (ctx) => {
         if(item.username === username)
             userExists = true
     })
-    if(ctx.session.user === "admin" && userExists){
+    if(ctx.session.username === "admin" && userExists){
         ctx.response.status = 401
         ctx.response.body = null
     }else {
@@ -85,7 +71,7 @@ Router.post('/register/validate', async (ctx) => {
 // 更改账号密码
 Router.post('/change_password', async (ctx) => {
     const {username, password} = ctx.request.body
-    if(ctx.session.user === "admin"){
+    if(ctx.session.username === "admin"){
         // 盐加密
         const salt = bcrypt.genSaltSync(10);
         const bcryptPassword = bcrypt.hashSync(password, salt);
@@ -100,7 +86,7 @@ Router.post('/change_password', async (ctx) => {
 
 // 删除账号
 Router.post('/delete_user', async (ctx) => {
-    if(ctx.session.user === "admin" && ctx.request.body.username !== "admin"){
+    if(ctx.session.username === "admin" && ctx.request.body.username !== "admin"){
         await deleteAnUser(ctx.request.body.username)
         ctx.response.status = 200
         ctx.response.body = { signal: 'Delete successfully', user: ctx.request.body.username }
@@ -109,3 +95,10 @@ Router.post('/delete_user', async (ctx) => {
         ctx.response.body = null
     }
 })
+
+// 功能页面, 判断是否登录
+Router.get('/osha', authentication)
+Router.get('/sisco', authentication)
+Router.get('/otos', authentication)
+Router.get('/milos', authentication)
+Router.get('/sider', authentication)

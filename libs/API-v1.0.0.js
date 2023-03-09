@@ -6,17 +6,17 @@ import {getUsers} from "./usersAdminister/getUsers.js";
 export const RouterAPI = router()
 
 RouterAPI.get('/api/user/', async (ctx) => {
-    const { user } = ctx.session;
+    const { username } = ctx.session;
     // 如果没有log in，session里面不存在user
-    if(user === undefined)
+    if(username === undefined)
         ctx.body = { username: null }
-    else ctx.body = { username: user }
+    else ctx.body = { username: username }
 })
 
 
 RouterAPI.get('/api/users/', async (ctx) => {
-    const { user } = ctx.session;
-    if(user === "admin") {
+    const { username } = ctx.session;
+    if(username === "admin") {
         ctx.body = await getUsers()
     }
     else ctx.body = null

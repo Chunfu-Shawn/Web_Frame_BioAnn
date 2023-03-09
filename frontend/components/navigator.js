@@ -106,7 +106,7 @@ export default function Navigator(){
                             </Button>
                         </Dropdown>
                         :
-                        <Button onClick={onHandleLogin} >
+                        <Button onClick={onHandleLogin}>
                             Login
                         </Button>
                     }
