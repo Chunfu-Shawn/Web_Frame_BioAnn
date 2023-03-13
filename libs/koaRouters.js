@@ -97,8 +97,8 @@ Router.post('/delete_user', async (ctx) => {
 })
 
 // 功能页面, 判断是否登录
-Router.get('/osha', authentication)
-Router.get('/sisco', authentication)
-Router.get('/otos', authentication)
-Router.get('/milos', authentication)
-Router.get('/sider', authentication)
+Router.get('/osha', (ctx) => authentication(ctx,false))
+Router.get('/sisco', (ctx) => authentication(ctx,false))
+Router.get('/otos', (ctx) => authentication(ctx,false))
+Router.get('/milos', (ctx) => authentication(ctx,false))
+Router.get('/sider', (ctx) => authentication(ctx,false))

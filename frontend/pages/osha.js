@@ -3,6 +3,7 @@ import LayoutCustom, { siteTitle } from '../components/LayoutCustom.js'
 import RunModule from "../components/OSHA/RunModule";
 import {validateMessages} from "./login";
 import {Card} from "antd";
+import History from "../components/History";
 
 export default function OSHA() {
 
@@ -18,6 +19,7 @@ export default function OSHA() {
                 <Card style={{padding: "20px 150px"}}>
                     <RunModule validateMessages={validateMessages}/>
                 </Card>
+                <History/>
             </div>
         </LayoutCustom>
     )

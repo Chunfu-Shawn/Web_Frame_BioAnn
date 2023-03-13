@@ -21,12 +21,9 @@ const optionTipStyle = {
 }
 
 export default function RunModule(props) {
-    const {
-        validateMessages
-    } = props
     const UPLOAD_URL = `/milos/run/`
     const [siRNAFileList, setSiRNAFileList] = useState([]);
-    const [database, setDatabase] = useState("Homo sapiens");
+    const [targetRegion, setTargetRegion] = useState("5'-UTR");
     const [SSResults, setSSResults] = useState(true);
     const [seedRegion, setSeedRegion] = useState('1-9');
     const [maxMismatch, setMaxMismatch] = useState('none');
@@ -34,8 +31,9 @@ export default function RunModule(props) {
     const router = useRouter()
     const [form] = Form.useForm();
 
-    const onChangeDatabase = (value) => {
-        setDatabase(value);
+    const onChangeTargetRegion = (e) => {
+        setTargetRegion(e.target.checked);
+        setTimeout(()=>console.log(targetRegion),100)
     }
     const onChangeSSResults = (e) => {
         setSSResults(e.target.checked);
@@ -159,8 +157,8 @@ export default function RunModule(props) {
                         <span style={optionNameStyle}>Target Region Selection</span>
                         <Row>
                             <Checkbox
-                                checked={SSResults}
-                                onChange={onChangeSSResults}
+                                checked={targetRegion}
+                                onChange={onChangeTargetRegion}
                             >
                                 5'-UTR
                             </Checkbox>
